@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulación orgánica · Árbol genealógico</title>
+
+    <style>
+        /* ===== ESTILOS GENERALES ===== */
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #f0f4f8;
+            margin: 2rem 1rem;
+            color: #1e1e2a;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 2rem 2rem 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2rem;
+            color: #0b3b4f;
+            letter-spacing: -0.5px;
+            margin-top: 0;
+            border-bottom: 3px solid #b3d9e8;
+            padding-bottom: 0.5rem;
+        }
+
+        h2 {
+            color: #0f4c5c;
+            border-left: 6px solid #1d7a8c;
+            padding-left: 0.8rem;
+            margin-top: 2.4rem;
+            font-weight: 600;
+        }
+
+        h3 {
+            color: #1a6b5e;
+            margin-top: 1.8rem;
+            font-weight: 600;
+        }
+
+        .note {
+            background: #fef9e3;
+            border-left: 5px solid #f7b731;
+            padding: 0.8rem 1.2rem;
+            border-radius: 8px;
+            margin: 1.2rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.2rem 0;
+            font-size: 0.95rem;
+        }
+
+        th {
+            background: #1d7a8c;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.7rem 0.5rem;
+            text-align: center;
+        }
+
+        td,
+        th {
+            border: 1px solid #d0dce4;
+            padding: 0.7rem 0.6rem;
+            vertical-align: middle;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fafc;
+        }
+
+        .highlight {
+            background: #e3f0f5;
+        }
+
+        .familia td:first-child {
+            font-weight: 600;
+            color: #0c4a5a;
+        }
+
+        .ejemplo {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            background: #edf3f7;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .radical-nombre {
+            font-style: italic;
+            color: #1f6b5e;
+            font-weight: 500;
+        }
+
+        .grupo-func {
+            font-weight: 600;
+            color: #a13d6b;
+        }
+
+        .pre-wrap {
+            background: #f4f8fb;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            line-height: 1.6;
+            border: 1px solid #d9e4ec;
+        }
+
+        .evolution-box {
+            background: #eaf4ed;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            line-height: 1.7;
+            border: 1px solid #b8cfc4;
+        }
+
+        .small-note {
+            font-size: 0.9rem;
+            color: #3a5a6a;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        .mt-2 {
+            margin-top: 1.5rem;
+        }
+
+        .badge {
+            background: #d9eaf0;
+            border-radius: 20px;
+            padding: 0.1rem 0.8rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 1rem;
+            }
+            table {
+                font-size: 0.8rem;
+            }
+            td,
+            th {
+                padding: 0.4rem 0.3rem;
+            }
+            .pre-wrap,
+            .evolution-box {
+                font-size: 0.75rem;
+                padding: 0.8rem;
+            }
+            .ejemplo {
+                white-space: normal;
+                word-break: break-all;
+            }
+        }
+
+        /* ===== MÓDULO 3: GRUPOS FUNCIONALES ===== */
+        .grupos-module {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.8rem 1.5rem 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 20, 30, 0.08);
+            border: 1px solid #e9f0f4;
+        }
+
+        .grupos-module h2 {
+            color: #0f4c5c;
+            border-left: 6px solid #1d7a8c;
+            padding-left: 0.8rem;
+            margin-top: 0;
+            margin-bottom: 0.2rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .grupos-module .intro {
+            color: #2c5a6a;
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            padding-left: 1.4rem;
+            border-bottom: 2px dashed #d0e2ec;
+            padding-bottom: 0.6rem;
+        }
+
+        .tree-grupos {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+        }
+
+        .root-alcano {
+            background: linear-gradient(145deg, #1a5f73, #0f4c5c);
+            color: white;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: 2px;
+            padding: 0.6rem 2.5rem;
+            border-radius: 60px;
+            box-shadow: 0 6px 14px rgba(13, 67, 84, 0.35);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .v-arrow-grupos {
+            font-size: 2rem;
+            line-height: 1;
+            color: #3d7b8f;
+            margin: 0.1rem 0;
+            font-weight: 300;
+        }
+
+        .sustituye-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.8rem 3rem;
+            margin: 1rem 0 0.5rem;
+            padding: 1.2rem 1.5rem;
+            background: #f5faff;
+            border-radius: 60px;
+            border: 1px solid #d5e8f0;
+            width: 100%;
+        }
+
+        .sust-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            min-width: 100px;
+            flex: 0 1 auto;
+        }
+
+        .sust-arrow {
+            font-size: 1.8rem;
+            color: #1d7a8c;
+            line-height: 1.2;
+            font-weight: 300;
+        }
+
+        .sust-group {
+            background: #eaf3f8;
+            font-weight: 700;
+            font-size: 1.3rem;
+            color: #1d5a6b;
+            padding: 0.1rem 1rem;
+            border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            border: 2px solid #b8d4e0;
+            background: #ffffff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        }
+
+        .sust-family {
+            background: #dcebf3;
+            padding: 0.15rem 1.4rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #1b5061;
+            letter-spacing: 0.3px;
+            border: 1px solid #c0d8e6;
+        }
+
+        .sust-group.acid-group {
+            border-color: #b34a3a;
+            color: #7a2a1e;
+            background: #fce9e6;
+        }
+
+        .sust-family.acid-family {
+            background: #fce9e6;
+            border-color: #b34a3a;
+            color: #7a2a1e;
+        }
+
+        .note-sust {
+            margin-top: 1.2rem;
+            font-size: 0.9rem;
+            color: #4d7383;
+            background: #eef6fa;
+            padding: 0.3rem 1.8rem;
+            border-radius: 40px;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+            .grupos-module {
+                padding: 1rem;
+            }
+            .root-alcano {
+                font-size: 1.3rem;
+                padding: 0.4rem 1.4rem;
+            }
+            .sustituye-grid {
+                gap: 1rem 1.5rem;
+                padding: 0.8rem;
+            }
+            .sust-item {
+                min-width: 70px;
+            }
+            .sust-arrow {
+                font-size: 1.4rem;
+            }
+            .sust-group {
+                font-size: 1rem;
+                padding: 0.1rem 0.6rem;
+            }
+            .sust-family {
+                font-size: 0.75rem;
+                padding: 0.1rem 0.8rem;
+            }
+        }
+
+        /* ===== MÓDULO 5: RELACIÓN ENTRE FAMILIAS ===== */
+        .relacion-module {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.8rem 1.5rem 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 20, 30, 0.08);
+            border: 1px solid #e9f0f4;
+        }
+
+        .relacion-module h2 {
+            color: #0f4c5c;
+            border-left: 6px solid #1d7a8c;
+            padding-left: 0.8rem;
+            margin-top: 0;
+            margin-bottom: 0.2rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .relacion-module .intro {
+            color: #2c5a6a;
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            padding-left: 1.4rem;
+            border-bottom: 2px dashed #d0e2ec;
+            padding-bottom: 0.6rem;
+        }
+
+        .tree-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+        }
+
+        .node-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 60px;
+            padding: 0.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+            min-width: 140px;
+        }
+
+        .node-card .family-name {
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .node-card .func-group {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            margin-top: 0.1rem;
+        }
+
+        .node-alcano {
+            background: linear-gradient(145deg, #1a5f73, #0f4c5c);
+            color: white;
+            border-color: #0a3a48;
+            box-shadow: 0 6px 16px rgba(13, 67, 84, 0.35);
+        }
+        .node-alcano .func-group {
+            background: rgba(255, 255, 255, 0.15);
+            color: #cde4ed;
+        }
+
+        .node-alcohol {
+            background: #e1f0ea;
+            border-color: #3b8a72;
+            color: #1d5f4a;
+        }
+        .node-alcohol .func-group {
+            background: #cde6dc;
+            color: #1a5f4a;
+        }
+
+        .node-aldehido {
+            background: #fff2db;
+            border-color: #cc8b3a;
+            color: #8a5a1a;
+        }
+        .node-aldehido .func-group {
+            background: #f5e3c0;
+            color: #8a5a1a;
+        }
+
+        .node-acido {
+            background: #fce9e6;
+            border-color: #b34a3a;
+            color: #7a2a1e;
+            box-shadow: 0 6px 16px rgba(179, 74, 58, 0.25);
+        }
+        .node-acido .func-group {
+            background: #f5d4ce;
+            color: #7a2a1e;
+        }
+
+        .node-ester {
+            background: #f3ede8;
+            border-color: #b39a8a;
+            color: #4d3a2e;
+        }
+        .node-ester .func-group {
+            background: #e6dbd2;
+            color: #4d3a2e;
+        }
+
+        .node-amida {
+            background: #e8f0f5;
+            border-color: #6f8fa0;
+            color: #1d4a5a;
+        }
+        .node-amida .func-group {
+            background: #d4e2ec;
+            color: #1d4a5a;
+        }
+
+        .node-halogenuro {
+            background: #f0ece8;
+            border-color: #9a8a7a;
+            color: #4a3a2e;
+        }
+        .node-halogenuro .func-group {
+            background: #e2dad2;
+            color: #4a3a2e;
+        }
+
+        .node-anhidrido {
+            background: #f5ede8;
+            border-color: #b38a7a;
+            color: #5a3a2a;
+        }
+        .node-anhidrido .func-group {
+            background: #e6dbd0;
+            color: #5a3a2a;
+        }
+
+        .node-nitrilo {
+            background: #dce8f0;
+            border-color: #3b6a8a;
+            color: #1a3a5a;
+        }
+        .node-nitrilo .func-group {
+            background: #c6dae8;
+            color: #1a3a5a;
+        }
+
+        .v-arrow {
+            font-size: 2rem;
+            line-height: 1;
+            color: #3d7b8f;
+            margin: 0.1rem 0;
+            font-weight: 300;
+        }
+
+        .arrow-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #6f8f9e;
+            background: #eef4f7;
+            padding: 0.05rem 1rem;
+            border-radius: 30px;
+            border: 1px solid #dce5ea;
+            margin: -0.2rem 0 0.1rem;
+        }
+
+        .branch-horizontal {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.8rem 3.5rem;
+            margin: 0.2rem 0 0.5rem;
+            padding: 0.8rem 1rem;
+            background: #f5faff;
+            border-radius: 60px;
+            border: 1px solid #d5e8f0;
+        }
+
+        .branch-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+        }
+
+        .branch-item .func-group {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.2rem;
+            background: #dcebf3;
+            padding: 0.1rem 0.8rem;
+            border-radius: 30px;
+            color: #1d5a6b;
+        }
+
+        .branch-item .family-name {
+            background: #dcebf3;
+            padding: 0.15rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1b5061;
+        }
+
+        .central-axis {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 450px;
+            margin: 0.3rem auto;
+            background: #f6fafd;
+            padding: 1rem 0.5rem 0.8rem;
+            border-radius: 60px;
+            border: 1px solid #dcebf3;
+        }
+
+        .acid-derivatives {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 0.8rem;
+            padding: 1rem 0.5rem 0.5rem;
+            background: #fcf9f7;
+            border-radius: 40px;
+            border: 1px solid #e8ddd4;
+        }
+
+        .acid-derivatives .acid-label {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #7a2a1e;
+            background: #fce9e6;
+            padding: 0.2rem 1.8rem;
+            border-radius: 40px;
+            border: 2px solid #b34a3a;
+            margin-bottom: 0.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .acid-derivatives .acid-label .func-group {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 0 0.6rem;
+            border-radius: 20px;
+            font-size: 1rem;
+        }
+
+        .derivatives-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem 2.5rem;
+            width: 100%;
+            padding: 0.8rem 0.5rem;
+        }
+
+        .deriv-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 100px;
+            flex: 0 1 auto;
+        }
+
+        .deriv-arrow {
+            font-size: 1.8rem;
+            color: #b34a3a;
+            line-height: 1.2;
+            font-weight: 300;
+            margin: 0.1rem 0;
+        }
+
+        .deriv-reagent {
+            background: #f0e6dd;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #5f4534;
+            padding: 0.05rem 0.9rem;
+            border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid #d6c4b8;
+            background: #f5ede7;
+        }
+
+        .nitrile-branch {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem 0.8rem;
+            margin-top: 0.8rem;
+            padding: 0.5rem 1.8rem;
+            background: #ecf3f9;
+            border-radius: 50px;
+            border: 1px solid #cbdbe7;
+            width: auto;
+        }
+
+        .nitrile-branch .from-acid {
+            font-weight: 600;
+            color: #7a2a1e;
+            background: #fce9e6;
+            padding: 0.1rem 1rem;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        .nitrile-branch .from-acid .func-group {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 255, 255, 0.4);
+            padding: 0 0.4rem;
+            border-radius: 12px;
+        }
+
+        .nitrile-branch .arrow-right {
+            font-size: 1.8rem;
+            color: #2b5e6e;
+            font-weight: 300;
+        }
+
+        .nitrile-branch .reaction-text {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #2b5e6e;
+            background: #e7f0f5;
+            padding: 0.05rem 1rem;
+            border-radius: 30px;
+            white-space: nowrap;
+        }
+
+        .nitrile-branch .product-nitrilo {
+            background: #2b5e6e;
+            color: white;
+            font-weight: 700;
+            padding: 0.1rem 1.8rem;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nitrile-branch .product-nitrilo .func-group {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0 0.5rem;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+
+        .note-final {
+            margin-top: 1.2rem;
+            font-size: 0.85rem;
+            color: #4d7383;
+            background: #eef6fa;
+            padding: 0.2rem 1.5rem;
+            border-radius: 40px;
+        }
+
+        @media (max-width: 700px) {
+            .relacion-module {
+                padding: 1rem;
+            }
+            .node-card {
+                padding: 0.3rem 1rem;
+                min-width: 100px;
+            }
+            .node-card .family-name {
+                font-size: 1rem;
+            }
+            .node-card .func-group {
+                font-size: 0.8rem;
+            }
+            .branch-horizontal {
+                gap: 0.8rem 1.5rem;
+            }
+            .central-axis {
+                max-width: 100%;
+            }
+            .derivatives-grid {
+                gap: 0.8rem 1.2rem;
+            }
+            .deriv-item {
+                min-width: 70px;
+            }
+            .deriv-arrow {
+                font-size: 1.4rem;
+            }
+            .nitrile-branch {
+                flex-wrap: wrap;
+                padding: 0.5rem 1rem;
+            }
+            .nitrile-branch .reaction-text {
+                white-space: normal;
+            }
+            .acid-derivatives .acid-label {
+                font-size: 1rem;
+                padding: 0.2rem 1rem;
+                flex-wrap: wrap;
+            }
+            .note-final {
+                font-size: 0.75rem;
+                padding: 0.2rem 0.8rem;
+            }
+        }
+
+        /* ===== MÓDULO 7: LA IDEA MÁS IMPORTANTE ===== */
+        .idea-module {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.8rem 1.5rem 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 20, 30, 0.08);
+            border: 1px solid #e9f0f4;
+        }
+
+        .idea-module h2 {
+            color: #0f4c5c;
+            border-left: 6px solid #1d7a8c;
+            padding-left: 0.8rem;
+            margin-top: 0;
+            margin-bottom: 0.2rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .idea-module .intro {
+            color: #2c5a6a;
+            font-size: 1.05rem;
+            margin-bottom: 2rem;
+            padding-left: 1.4rem;
+            border-bottom: 2px dashed #d0e2ec;
+            padding-bottom: 0.6rem;
+        }
+
+        .evolution-chain {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            overflow-x: auto;
+            padding: 0.5rem 0;
+        }
+
+        .evo-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: 700;
+            font-size: 1.4rem;
+            padding: 0.4rem 2rem;
+            border-radius: 60px;
+            text-align: center;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border: 2px solid transparent;
+            min-width: 160px;
+        }
+
+        .evo-node .family-name {
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+
+        .evo-node .func-group {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: 600;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 0.05rem 0.8rem;
+            border-radius: 30px;
+            margin-top: 0.1rem;
+        }
+
+        .evo-node.alcano {
+            background: linear-gradient(145deg, #1a5f73, #0f4c5c);
+            color: white;
+            border-color: #0a3a48;
+            box-shadow: 0 6px 16px rgba(13, 67, 84, 0.35);
+        }
+        .evo-node.alcano .func-group {
+            background: rgba(255, 255, 255, 0.15);
+            color: #cde4ed;
+        }
+
+        .evo-node.alcohol {
+            background: #e1f0ea;
+            color: #1d5f4a;
+            border-color: #3b8a72;
+        }
+        .evo-node.alcohol .func-group {
+            background: #cde6dc;
+            color: #1a5f4a;
+        }
+
+        .evo-node.aldehido {
+            background: #fff2db;
+            color: #8a5a1a;
+            border-color: #cc8b3a;
+        }
+        .evo-node.aldehido .func-group {
+            background: #f5e3c0;
+            color: #8a5a1a;
+        }
+
+        .evo-node.acido {
+            background: #fce9e6;
+            color: #7a2a1e;
+            border-color: #b34a3a;
+            box-shadow: 0 6px 16px rgba(179, 74, 58, 0.25);
+        }
+        .evo-node.acido .func-group {
+            background: #f5d4ce;
+            color: #7a2a1e;
+        }
+
+        .evo-arrow-down {
+            font-size: 2rem;
+            line-height: 1;
+            color: #6f8f9e;
+            margin: 0.1rem 0;
+            font-weight: 300;
+        }
+
+        .evo-arrow-down.small {
+            font-size: 1.4rem;
+        }
+
+        .oxidation-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #6f8f9e;
+            background: #eef4f7;
+            padding: 0.05rem 1rem;
+            border-radius: 30px;
+            margin: -0.2rem 0 0.1rem;
+            border: 1px solid #dce5ea;
+        }
+
+        .derivatives-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0.6rem 0 0.8rem;
+            width: 80%;
+            max-width: 500px;
+        }
+
+        .derivatives-divider hr {
+            flex: 1;
+            border: 0;
+            border-top: 2px dashed #d0dce4;
+        }
+
+        .derivatives-divider span {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #4d7383;
+            background: #f4f8fb;
+            padding: 0.1rem 1.2rem;
+            border-radius: 40px;
+            white-space: nowrap;
+        }
+
+        .derivatives-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem 2.5rem;
+            width: 100%;
+            padding: 0.8rem 0.5rem 0.2rem;
+            background: #fcf9f7;
+            border-radius: 60px;
+            border: 1px solid #e8ddd4;
+            margin: 0.2rem 0 0.5rem;
+        }
+
+        .deriv-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            min-width: 100px;
+            flex: 0 1 auto;
+        }
+
+        .deriv-arrow {
+            font-size: 1.6rem;
+            color: #b34a3a;
+            line-height: 1.2;
+            font-weight: 300;
+        }
+
+        .deriv-reagent {
+            background: #f0e6dd;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #5f4534;
+            padding: 0.05rem 0.9rem;
+            border-radius: 30px;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid #d6c4b8;
+            background: #f5ede7;
+            text-align: center;
+        }
+
+        .deriv-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 40px;
+            padding: 0.3rem 1.2rem;
+            border: 2px solid transparent;
+            background: #f5f0eb;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            min-width: 100px;
+        }
+
+        .deriv-card .family-name {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #3f2c1f;
+        }
+
+        .deriv-card .func-group {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 0 0.6rem;
+            border-radius: 20px;
+            color: #3f2c1f;
+            margin-top: 0.05rem;
+        }
+
+        .deriv-card.ester {
+            background: #f3ede8;
+            border-color: #b39a8a;
+        }
+        .deriv-card.amida {
+            background: #e8f0f5;
+            border-color: #6f8fa0;
+        }
+        .deriv-card.halogenuro {
+            background: #f0ece8;
+            border-color: #9a8a7a;
+        }
+        .deriv-card.anhidrido {
+            background: #f5ede8;
+            border-color: #b38a7a;
+        }
+
+        .idea-conclusion {
+            margin-top: 1.8rem;
+            background: #f0f8ff;
+            padding: 1rem 1.8rem;
+            border-radius: 16px;
+            border: 1px solid #b8d0dd;
+            text-align: center;
+            font-size: 1rem;
+            color: #1e3b46;
+            line-height: 1.6;
+        }
+
+        .idea-conclusion strong {
+            color: #0f4c5c;
+        }
+
+        @media (max-width: 700px) {
+            .idea-module {
+                padding: 1rem;
+            }
+            .evo-node {
+                padding: 0.3rem 1rem;
+                min-width: 100px;
+            }
+            .evo-node .family-name {
+                font-size: 1.1rem;
+            }
+            .evo-node .func-group {
+                font-size: 0.85rem;
+            }
+            .derivatives-grid {
+                gap: 0.8rem 1.2rem;
+                padding: 0.8rem;
+            }
+            .deriv-item {
+                min-width: 70px;
+            }
+            .deriv-arrow {
+                font-size: 1.2rem;
+            }
+            .deriv-reagent {
+                font-size: 0.7rem;
+                padding: 0.05rem 0.6rem;
+            }
+            .deriv-card {
+                padding: 0.2rem 0.8rem;
+                min-width: 70px;
+            }
+            .deriv-card .family-name {
+                font-size: 0.85rem;
+            }
+            .deriv-card .func-group {
+                font-size: 0.75rem;
+            }
+            .idea-conclusion {
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* ===== MÓDULO 8: RECONOCER GRUPOS FUNCIONALES ===== */
+        .reconocimiento-module {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 1.8rem 1.5rem 2.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 20px rgba(0, 20, 30, 0.08);
+            border: 1px solid #e9f0f4;
+        }
+
+        .reconocimiento-module h2 {
+            color: #0f4c5c;
+            border-left: 6px solid #1d7a8c;
+            padding-left: 0.8rem;
+            margin-top: 0;
+            margin-bottom: 0.2rem;
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .reconocimiento-module .intro {
+            color: #2c5a6a;
+            font-size: 1.05rem;
+            margin-bottom: 1.8rem;
+            padding-left: 1.4rem;
+            border-bottom: 2px dashed #d0e2ec;
+            padding-bottom: 0.6rem;
+        }
+
+        .reconocimiento-module h3 {
+            color: #1a6b5e;
+            margin-top: 2rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+            font-size: 1.4rem;
+            border-left: 4px solid #3b8a72;
+            padding-left: 0.8rem;
+        }
+
+        .reconocimiento-module h4 {
+            color: #1d5a6b;
+            margin-top: 1.5rem;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            font-size: 1.15rem;
+        }
+
+        .recog-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.2rem 0;
+            font-size: 0.92rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .recog-table th {
+            background: #1d7a8c;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.7rem 0.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .recog-table td {
+            border: 1px solid #d0dce4;
+            padding: 0.7rem 0.6rem;
+            vertical-align: middle;
+            background-color: #ffffff;
+        }
+
+        .recog-table tr:nth-child(even) td {
+            background-color: #f8fafc;
+        }
+
+        .recog-table .family-cell {
+            font-weight: 700;
+            color: #0c4a5a;
+        }
+
+        .recog-table .func-cell {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-weight: 700;
+            color: #a13d6b;
+            text-align: center;
+            font-size: 1.05rem;
+        }
+
+        .recog-table .key-cell {
+            font-size: 0.9rem;
+            color: #1e3b46;
+        }
+
+        .recog-table .trick-cell {
+            font-size: 0.9rem;
+            background: #f4f9fc;
+            border-left: 3px solid #b8d4e0;
+            font-style: italic;
+        }
+
+        .decision-tree {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #f6fafd;
+            border-radius: 20px;
+            padding: 1.5rem 1rem;
+            border: 1px solid #dcebf3;
+            margin: 1rem 0 1.5rem;
+        }
+
+        .tree-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem 2rem;
+            margin: 0.2rem 0;
+            width: 100%;
+        }
+
+        .tree-node {
+            background: white;
+            border: 2px solid #2b7a8f;
+            border-radius: 40px;
+            padding: 0.3rem 1.6rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #0b3f4f;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            text-align: center;
+        }
+
+        .tree-node.root {
+            background: #1a5f73;
+            color: white;
+            border-color: #1a5f73;
+            font-size: 1.5rem;
+            padding: 0.5rem 2.5rem;
+            box-shadow: 0 4px 12px rgba(13, 67, 84, 0.3);
+        }
+
+        .tree-node.yes {
+            border-color: #3b8a72;
+            background: #e1f0ea;
+            color: #1d5f4a;
+        }
+
+        .tree-node.no {
+            border-color: #b34a3a;
+            background: #fce9e6;
+            color: #7a2a1e;
+        }
+
+        .tree-node.child {
+            font-size: 1rem;
+            padding: 0.2rem 1.2rem;
+        }
+
+        .tree-arrow {
+            font-size: 1.8rem;
+            color: #6f8f9e;
+            font-weight: 300;
+            line-height: 1;
+        }
+
+        .tree-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #5a7e8e;
+            background: #eaf2f6;
+            padding: 0.05rem 1rem;
+            border-radius: 30px;
+        }
+
+        .tree-branch-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem 2rem;
+            background: #ffffffd9;
+            padding: 0.4rem 1.5rem;
+            border-radius: 60px;
+            border: 1px solid #d5e8f0;
+        }
+
+        .carbonyl-table {
+            width: 100%;
+            max-width: 600px;
+            margin: 0.8rem auto;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .carbonyl-table th {
+            background: #3b8a72;
+            color: #fff;
+            padding: 0.6rem 0.5rem;
+            text-align: center;
+        }
+
+        .carbonyl-table td {
+            border: 1px solid #d0dce4;
+            padding: 0.5rem 0.6rem;
+            text-align: center;
+            background-color: #fafffe;
+        }
+
+        .carbonyl-table tr:nth-child(even) td {
+            background-color: #f4f9f6;
+        }
+
+        .carbonyl-table .attached {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: #a13d6b;
+            font-size: 1.1rem;
+        }
+
+        .carbonyl-table .family-out {
+            font-weight: 600;
+            color: #0c4a5a;
+        }
+
+        .question-list {
+            counter-reset: q;
+            list-style: none;
+            padding: 0;
+            margin: 1rem 0;
+        }
+
+        .question-list li {
+            counter-increment: q;
+            background: #f8fbfd;
+            border-left: 5px solid #1d7a8c;
+            padding: 0.8rem 1.2rem 0.8rem 3.2rem;
+            margin-bottom: 0.6rem;
+            border-radius: 0 12px 12px 0;
+            position: relative;
+            font-size: 0.98rem;
+            line-height: 1.6;
+        }
+
+        .question-list li::before {
+            content: counter(q) ".";
+            position: absolute;
+            left: 1rem;
+            top: 0.8rem;
+            font-weight: 800;
+            color: #1d7a8c;
+            font-size: 1.2rem;
+        }
+
+        .question-list .sub-answer {
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            background: #eaf0f4;
+            padding: 0.2rem 0.8rem;
+            border-radius: 6px;
+            margin-top: 0.3rem;
+            font-size: 0.9rem;
+            color: #1b4b5a;
+            border-left: 2px solid #b8d4e0;
+        }
+
+        .question-list .sub-answer strong {
+            color: #a13d6b;
+        }
+
+        .fund-box {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.2rem 0 0.5rem;
+        }
+
+        .fund-item {
+            background: #f4f8fb;
+            border-radius: 16px;
+            padding: 0.8rem 1.8rem;
+            min-width: 140px;
+            flex: 1 0 auto;
+            max-width: 280px;
+            border: 1px solid #d9e4ec;
+            text-align: center;
+        }
+
+        .fund-item .title {
+            font-weight: 700;
+            color: #0f4c5c;
+            font-size: 1.1rem;
+            border-bottom: 2px solid #b3d9e8;
+            padding-bottom: 0.3rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .fund-item .content {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: #1d3b46;
+            line-height: 1.6;
+        }
+
+        .fund-item .content .highlight {
+            background: #fce9e6;
+            padding: 0.05rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #7a2a1e;
+        }
+
+        .golden-rule {
+            background: linear-gradient(145deg, #fcf3e8, #f7eade);
+            border: 2px solid #dbb88c;
+            border-radius: 20px;
+            padding: 1.2rem 2rem;
+            margin-top: 1.8rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(180, 120, 60, 0.12);
+        }
+
+        .golden-rule .rule-title {
+            font-weight: 800;
+            color: #7a4a1e;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .golden-rule .rule-text {
+            font-size: 1.05rem;
+            color: #3f2c1f;
+            line-height: 1.5;
+            margin-top: 0.3rem;
+        }
+
+        .golden-rule .rule-text strong {
+            color: #a13d6b;
+            background: #ffffffd0;
+            padding: 0.05rem 0.6rem;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 700px) {
+            .reconocimiento-module {
+                padding: 1rem;
+            }
+            .recog-table {
+                font-size: 0.75rem;
+            }
+            .recog-table td,
+            .recog-table th {
+                padding: 0.3rem 0.2rem;
+            }
+            .tree-node {
+                font-size: 0.9rem;
+                padding: 0.2rem 0.8rem;
+            }
+            .tree-node.root {
+                font-size: 1.1rem;
+                padding: 0.3rem 1.2rem;
+            }
+            .tree-arrow {
+                font-size: 1.2rem;
+            }
+            .tree-branch-group {
+                gap: 0.3rem 1rem;
+                padding: 0.3rem 0.8rem;
+            }
+            .carbonyl-table {
+                font-size: 0.8rem;
+            }
+            .fund-item {
+                min-width: 100px;
+                padding: 0.6rem 1rem;
+            }
+            .golden-rule {
+                padding: 0.8rem 1rem;
+            }
+            .question-list li {
+                padding-left: 2.2rem;
+                font-size: 0.9rem;
+            }
+            .question-list li::before {
+                left: 0.6rem;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- ================== 1. HIDROCARBUROS ================== -->
+        <h1>?? Formulación orgánica<br /><span style="font-size:1.2rem; color:#2a6f7e;">un árbol genealógico</span></h1>
+
+        <p style="font-size:1.05rem; line-height:1.6;">
+            La mejor forma de entender la formulación orgánica no es memorizar 15 familias aisladas, sino verlas como un <strong>árbol genealógico</strong>.
+            Casi todos los compuestos derivan de un hidrocarburo sustituyendo un átomo de hidrógeno por un grupo funcional.
+        </p>
+
+        <h2>1. El punto de partida: los hidrocarburos</h2>
+        <p>Todos están formados únicamente por carbono e hidrógeno.</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Familia</th>
+                    <th>Enlace característico</th>
+                    <th>Terminación</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>Alcanos</td><td>C–C</td><td><strong>-ano</strong></td></tr>
+                <tr><td>Alquenos</td><td>C=C</td><td><strong>-eno</strong></td></tr>
+                <tr><td>Alquinos</td><td>C=C</td><td><strong>-ino</strong></td></tr>
+                <tr><td>Aromáticos</td><td>Anillo de benceno</td><td><strong>benceno</strong></td></tr>
+            </tbody>
+        </table>
+
+        <div style="background:#f4f8fa; padding:0.6rem 1rem; border-radius:8px;">
+            <strong>Ejemplos:</strong>
+            <span class="ejemplo">CH4 ? metano</span> &nbsp;·&nbsp;
+            <span class="ejemplo">CH2=CH2 ? eteno</span> &nbsp;·&nbsp;
+            <span class="ejemplo">HC=CH ? etino</span> &nbsp;·&nbsp;
+            <span class="ejemplo">C6H6 ? benceno</span>
+        </div>
+
+        <!-- ================== 2. RADICALES ================== -->
+        <h2>2. Los radicales <span style="font-weight:400; font-size:0.9rem;">(¡la clave!)</span></h2>
+        <p>Un radical se obtiene <strong>quitando un H</strong> al hidrocarburo. La terminación cambia según la familia:</p>
+        <div style="margin-bottom: 0.8rem;">
+            <span class="radical-tag">Alcano: -ano ? -il (-ilo)</span>
+            <span class="radical-tag">Alqueno: -eno ? -enil (-enilo)</span>
+            <span class="radical-tag">Alquino: -ino ? -inil (-inilo)</span>
+        </div>
+
+        <table>
+            <thead>
+                <tr><th>Familia</th><th>Compuesto original</th><th>Radical (sistemático)</th><th>Nombre común / estructura</th></tr>
+            </thead>
+            <tbody>
+                <!-- Alcanos -->
+                <tr><td rowspan="5">Alcanos</td><td>Metano</td><td><strong>metil</strong></td><td>CH3–</td></tr>
+                <tr><td>Etano</td><td><strong>etil</strong></td><td>CH3CH2–</td></tr>
+                <tr><td>Propano</td><td><strong>propil</strong></td><td>CH3CH2CH2–</td></tr>
+                <tr><td>Butano</td><td><strong>butil</strong></td><td>CH3CH2CH2CH2–</td></tr>
+                <tr><td>Pentano</td><td><strong>pentil</strong></td><td>CH3CH2CH2CH2CH2–</td></tr>
+
+                <!-- Alquenos -->
+                <tr><td rowspan="2">Alquenos</td><td>Eteno</td><td><strong>etenil</strong></td><td><strong>vinilo</strong> (CH2=CH–)</td></tr>
+                <tr><td>Propeno</td><td><strong>propenil</strong> (1-propenil) / prop-2-en-1-il</td><td><strong>alilo</strong> (CH2=CH–CH2–)</td></tr>
+
+                <!-- Alquinos -->
+                <tr><td rowspan="2">Alquinos</td><td>Etino</td><td><strong>etinil</strong></td><td>HC=C–</td></tr>
+                <tr><td>Propino</td><td><strong>propinil</strong> (1-propinil) / prop-2-in-1-il</td><td>CH3–C=C–</td></tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <strong>Ejemplos:</strong> <br />
+            <span class="ejemplo">CH4 ? metano</span> &nbsp; pero &nbsp; <span class="ejemplo">CH3–</span> es el radical <strong>metil</strong>.<br />
+            <span class="ejemplo">CH2=CH2 ? eteno</span> &nbsp; pero &nbsp; <span class="ejemplo">CH2=CH–</span> es el radical <strong>etenil</strong> (o <strong>vinilo</strong>).<br />
+            <span class="ejemplo">HC=CH ? etino</span> &nbsp; pero &nbsp; <span class="ejemplo">HC=C–</span> es el radical <strong>etinil</strong>.<br />
+            El radical nunca aparece solo; siempre está unido a otra cosa.<br />
+            <span class="ejemplo">CH3OH</span> es <strong>metil + OH</strong> ? <strong>metanol</strong>.<br />
+            <span class="ejemplo">CH2=CHCl</span> es <strong>etenil (vinilo) + Cl</strong> ? <strong>cloruro de vinilo</strong>.
+        </div>
+
+        <!-- ================== 3. GRUPOS FUNCIONALES ================== -->
+        <div class="grupos-module">
+            <h2>3. Después aparecen los grupos funcionales</h2>
+            <p class="intro">Sobre un hidrocarburo puedes sustituir un H por un grupo funcional.</p>
+
+            <div class="tree-grupos">
+                <div class="root-alcano">Alcano</div>
+                <div class="v-arrow-grupos">?</div>
+                <div style="font-size:0.8rem; color:#5f7f8f; background:#e9f2f7; padding:0.05rem 1.2rem; border-radius:30px; margin-bottom:0.5rem; text-transform:uppercase; letter-spacing:1px;">
+                    sustituir un H por...
+                </div>
+
+                <div class="sustituye-grid">
+                    <div class="sust-item">
+                        <span class="sust-arrow">?</span>
+                        <span class="sust-group">–OH</span>
+                        <span class="sust-family">Alcohol</span>
+                    </div>
+                    <div class="sust-item">
+                        <span class="sust-arrow">?</span>
+                        <span class="sust-group">–NH2</span>
+                        <span class="sust-family">Amina</span>
+                    </div>
+                    <div class="sust-item">
+                        <span class="sust-arrow">?</span>
+                        <span class="sust-group">–X</span>
+                        <span class="sust-family">Halogenuro</span>
+                    </div>
+                    <div class="sust-item">
+                        <span class="sust-arrow">?</span>
+                        <span class="sust-group">–CN</span>
+                        <span class="sust-family">Nitrilo</span>
+                    </div>
+                    <div class="sust-item">
+                        <span class="sust-arrow">?</span>
+                        <span class="sust-group acid-group">–COOH</span>
+                        <span class="sust-family acid-family">Ácido carboxílico</span>
+                    </div>
+                </div>
+
+                <div class="note-sust">
+                    ? Cada flecha indica la sustitución de un hidrógeno del alcano por el grupo funcional correspondiente.
+                </div>
+            </div>
+        </div>
+
+        <!-- ================== 4. TABLA DE FAMILIAS ================== -->
+        <h2>4. Las familias importantes</h2>
+        <p>
+            En la siguiente tabla se recogen todos los grupos funcionales, el <strong>nombre del radical</strong> o grupo característico,
+            la terminación y un ejemplo representativo.
+        </p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Familia</th>
+                    <th>Grupo funcional</th>
+                    <th>Radical / grupo</th>
+                    <th>Terminación</th>
+                    <th>Ejemplo</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Alcoholes</td>
+                    <td><span class="grupo-func">–OH</span></td>
+                    <td><span class="radical-nombre">hidroxilo</span></td>
+                    <td><strong>-ol</strong></td>
+                    <td><span class="ejemplo">CH3OH</span> metanol</td>
+                </tr>
+                <tr>
+                    <td>Éteres</td>
+                    <td><span class="grupo-func">R–O–R'</span></td>
+                    <td><span class="radical-nombre">alcoxi</span> (ej. metoxi, etoxi)</td>
+                    <td>… <strong>éter</strong></td>
+                    <td><span class="ejemplo">CH3–O–CH3</span> dimetil éter</td>
+                </tr>
+                <tr>
+                    <td>Aldehídos</td>
+                    <td><span class="grupo-func">–CHO</span></td>
+                    <td><span class="radical-nombre">formilo</span></td>
+                    <td><strong>-al</strong></td>
+                    <td><span class="ejemplo">CH3CHO</span> etanal</td>
+                </tr>
+                <tr>
+                    <td>Cetonas</td>
+                    <td><span class="grupo-func">&gt;C=O</span></td>
+                    <td><span class="radical-nombre">carbonilo</span> (o acilo)</td>
+                    <td><strong>-ona</strong></td>
+                    <td><span class="ejemplo">CH3COCH3</span> propanona</td>
+                </tr>
+                <tr>
+                    <td>Ácidos carboxílicos</td>
+                    <td><span class="grupo-func">–COOH</span></td>
+                    <td><span class="radical-nombre">carboxilo</span></td>
+                    <td><strong>ácido … -oico</strong></td>
+                    <td><span class="ejemplo">CH3COOH</span> ácido etanoico</td>
+                </tr>
+                <tr>
+                    <td>Ésteres</td>
+                    <td><span class="grupo-func">R–COO–R'</span></td>
+                    <td><span class="radical-nombre">alcoxicarbonilo</span></td>
+                    <td><strong>…ato de …</strong></td>
+                    <td><span class="ejemplo">CH3COOCH2CH3</span> etanoato de etilo</td>
+                </tr>
+                <tr>
+                    <td>Amidas</td>
+                    <td><span class="grupo-func">–CONH2</span></td>
+                    <td><span class="radical-nombre">carbamoilo</span></td>
+                    <td><strong>-amida</strong></td>
+                    <td><span class="ejemplo">CH3CONH2</span> etanamida</td>
+                </tr>
+                <tr>
+                    <td>Nitrilos</td>
+                    <td><span class="grupo-func">–C=N</span></td>
+                    <td><span class="radical-nombre">ciano</span></td>
+                    <td><strong>-nitrilo</strong></td>
+                    <td><span class="ejemplo">CH3CN</span> etanonitrilo</td>
+                </tr>
+                <tr>
+                    <td>Aminas</td>
+                    <td><span class="grupo-func">–NH2</span></td>
+                    <td><span class="radical-nombre">amino</span></td>
+                    <td><strong>-amina</strong></td>
+                    <td><span class="ejemplo">CH3NH2</span> metanamina</td>
+                </tr>
+                <tr>
+                    <td>Halogenuros de alquilo</td>
+                    <td><span class="grupo-func">–X</span> (F, Cl, Br, I)</td>
+                    <td><span class="radical-nombre">halo</span> (fluoro, cloro, bromo, yodo)</td>
+                    <td><strong>haluro de …</strong></td>
+                    <td><span class="ejemplo">CH3Cl</span> cloruro de metilo</td>
+                </tr>
+                <tr>
+                    <td>Halogenuros de acilo</td>
+                    <td><span class="grupo-func">–COCl</span></td>
+                    <td><span class="radical-nombre">cloruro de acilo</span> (cloroformilo)</td>
+                    <td><strong>cloruro de …ilo</strong></td>
+                    <td><span class="ejemplo">CH3COCl</span> cloruro de etanoilo</td>
+                </tr>
+                <tr>
+                    <td>Anhídridos</td>
+                    <td><span class="grupo-func">RCO–O–COR</span></td>
+                    <td><span class="radical-nombre">anhídrido de ácido</span> (aciloxi)</td>
+                    <td><strong>anhídrido …oico</strong></td>
+                    <td><span class="ejemplo">(CH3CO)2O</span> anhídrido etanoico</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="note">
+            <p><strong>Nota:</strong> Los éteres proceden de un alcohol (<span class="ejemplo">R–OH</span>) cambiando el H por otro radical (<span class="ejemplo">R–O–R'</span>).<br />
+            Los ésteres proceden de <strong>ácido + alcohol (para formar agua)</strong> (<span class="ejemplo">R–COO–R'</span>).<br />
+            Las amidas se obtienen sustituyendo el <span class="ejemplo">–OH</span> del ácido por <span class="ejemplo">–NH2</span>.<br />
+            Los halogenuros de acilo derivan del ácido sustituyendo <span class="ejemplo">–OH</span> por <span class="ejemplo">–Cl</span>.<br />
+            Los anhídridos se forman uniendo dos ácidos y eliminando agua.</p>
+        </div>
+
+        <!-- ================== 5. RELACIÓN ENTRE FAMILIAS ================== -->
+        <div class="relacion-module">
+            <h2>5. La relación entre todas las familias</h2>
+            <p class="intro">Esta es la parte que suele faltar en clase y que hace que todo cobre sentido.<br>
+            <span style="font-size:0.9rem; color:#4d7383;">Observa cómo cambia el grupo funcional en cada transformación.</span></p>
+
+            <div class="tree-container">
+
+                <!-- NIVEL 0: ALCANOS -->
+                <div class="node-card node-alcano">
+                    <span class="family-name">ALCANOS</span>
+                    <span class="func-group">C–C</span>
+                </div>
+
+                <div class="v-arrow">?</div>
+                <span class="arrow-label">sustitución</span>
+
+                <!-- NIVEL 1: DERIVADOS DIRECTOS -->
+                <div class="branch-horizontal">
+                    <div class="branch-item">
+                        <span class="func-group">–OH</span>
+                        <span class="family-name">Alcoholes</span>
+                    </div>
+                    <div class="branch-item">
+                        <span class="func-group">–NH2</span>
+                        <span class="family-name">Aminas</span>
+                    </div>
+                    <div class="branch-item">
+                        <span class="func-group">–X</span>
+                        <span class="family-name">Halogenuros</span>
+                    </div>
+                </div>
+
+                <div class="v-arrow">?</div>
+                <span class="arrow-label">oxidación</span>
+
+                <!-- EJE CENTRAL (oxidación hacia ácido) -->
+                <div class="central-axis">
+                    <div class="node-card node-alcohol">
+                        <span class="family-name">Alcohol primario</span>
+                        <span class="func-group">R–CH2OH</span>
+                    </div>
+
+                    <div class="v-arrow" style="font-size:1.4rem; margin:0;">?</div>
+                    <span class="arrow-label">oxidación</span>
+
+                    <div class="node-card node-aldehido">
+                        <span class="family-name">Aldehído</span>
+                        <span class="func-group">R–CHO</span>
+                    </div>
+
+                    <div class="v-arrow" style="font-size:1.4rem; margin:0;">?</div>
+                    <span class="arrow-label">oxidación</span>
+
+                    <div class="node-card node-acido">
+                        <span class="family-name">Ácido carboxílico</span>
+                        <span class="func-group">R–COOH</span>
+                    </div>
+                </div>
+
+                <!-- DERIVADOS DEL ÁCIDO -->
+                <div class="acid-derivatives">
+                    <div class="acid-label">
+                        ? Ácido carboxílico
+                        <span class="func-group">R–COOH</span>
+                        ?
+                    </div>
+
+                    <div class="derivatives-grid">
+                        <!-- Éster -->
+                        <div class="deriv-item">
+                            <div class="deriv-arrow">?</div>
+                            <span class="deriv-reagent">+ Alcohol (para formar agua)</span>
+                            <div class="node-card node-ester" style="padding:0.3rem 1.2rem; min-width:auto;">
+                                <span class="family-name" style="font-size:1rem;">Éster</span>
+                                <span class="func-group" style="font-size:0.85rem;">R–COO–R'</span>
+                            </div>
+                        </div>
+                        <!-- Amida -->
+                        <div class="deriv-item">
+                            <div class="deriv-arrow">?</div>
+                            <span class="deriv-reagent">+ NH3</span>
+                            <div class="node-card node-amida" style="padding:0.3rem 1.2rem; min-width:auto;">
+                                <span class="family-name" style="font-size:1rem;">Amida</span>
+                                <span class="func-group" style="font-size:0.85rem;">R–CONH2</span>
+                            </div>
+                        </div>
+                        <!-- Halogenuro de acilo -->
+                        <div class="deriv-item">
+                            <div class="deriv-arrow">?</div>
+                            <span class="deriv-reagent">+ Cl</span>
+                            <div class="node-card node-halogenuro" style="padding:0.3rem 1.2rem; min-width:auto;">
+                                <span class="family-name" style="font-size:1rem;">Halogenuro de acilo</span>
+                                <span class="func-group" style="font-size:0.85rem;">R–COCl</span>
+                            </div>
+                        </div>
+                        <!-- Anhídrido -->
+                        <div class="deriv-item">
+                            <div class="deriv-arrow">?</div>
+                            <span class="deriv-reagent">+ Ácido</span>
+                            <div class="node-card node-anhidrido" style="padding:0.3rem 1.2rem; min-width:auto;">
+                                <span class="family-name" style="font-size:1rem;">Anhídrido</span>
+                                <span class="func-group" style="font-size:0.85rem;">R–CO–O–CO–R'</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nitrilo -->
+                    <div class="nitrile-branch">
+                        <span class="from-acid">
+                            Ácido <span class="func-group">R–COOH</span>
+                        </span>
+                        <span class="arrow-right">?</span>
+                        <span class="reaction-text">sustituir OH por CN</span>
+                        <span class="arrow-right">?</span>
+                        <span class="product-nitrilo">
+                            Nitrilo <span class="func-group">R–C=N</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="note-final">
+                    ? Las flechas indican transformaciones químicas — cada paso modifica el grupo funcional
+                </div>
+            </div>
+        </div>
+
+        <!-- ================== 6. TRUCO TERMINACIONES ================== -->
+        <h2>6. Un truco para memorizar las terminaciones</h2>
+        <p>Empieza aprendiendo solo esta secuencia:</p>
+
+        <table>
+            <thead>
+                <tr><th>Grupo</th><th>Terminación</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>Alcano</td><td><strong>-ano</strong></td></tr>
+                <tr><td>Alqueno</td><td><strong>-eno</strong></td></tr>
+                <tr><td>Alquino</td><td><strong>-ino</strong></td></tr>
+                <tr><td>Alcohol</td><td><strong>-ol</strong></td></tr>
+                <tr><td>Aldehído</td><td><strong>-al</strong></td></tr>
+                <tr><td>Cetona</td><td><strong>-ona</strong></td></tr>
+                <tr><td>Ácido</td><td><strong>ácido … -oico</strong></td></tr>
+                <tr><td>Éster</td><td><strong>…ato de …</strong></td></tr>
+                <tr><td>Amida</td><td><strong>-amida</strong></td></tr>
+                <tr><td>Amina</td><td><strong>-amina</strong></td></tr>
+                <tr><td>Nitrilo</td><td><strong>-nitrilo</strong></td></tr>
+            </tbody>
+        </table>
+
+        <p>Con estas diez terminaciones ya puedes nombrar la gran mayoría de los compuestos orgánicos de Bachillerato.</p>
+
+        <!-- ================== 7. LA IDEA MÁS IMPORTANTE ================== -->
+        <div class="idea-module">
+            <h2>7. La idea más importante</h2>
+            <p class="intro">
+                En lugar de memorizar 15 familias independientes, piensa en una <strong>evolución química</strong>.
+                Sigue el camino de oxidación desde el hidrocarburo hasta el ácido, y observa cómo de él derivan el resto de familias.
+                <br><span style="font-size:0.9rem; color:#4d7383;">Cada paso cambia el grupo funcional.</span>
+            </p>
+
+            <div class="evolution-chain">
+
+                <!-- 1. Alcano -->
+                <div class="evo-node alcano">
+                    <span class="family-name">Alcano</span>
+                    <span class="func-group">C–C</span>
+                </div>
+
+                <div class="evo-arrow-down">?</div>
+                <span class="oxidation-tag">? Oxidación</span>
+
+                <!-- 2. Alcohol -->
+                <div class="evo-node alcohol">
+                    <span class="family-name">Alcohol</span>
+                    <span class="func-group">R–OH</span>
+                </div>
+
+                <div class="evo-arrow-down">?</div>
+                <span class="oxidation-tag">? Oxidación</span>
+
+                <!-- 3. Aldehído -->
+                <div class="evo-node aldehido">
+                    <span class="family-name">Aldehído</span>
+                    <span class="func-group">R–CHO</span>
+                </div>
+
+                <div class="evo-arrow-down">?</div>
+                <span class="oxidation-tag">? Oxidación</span>
+
+                <!-- 4. Ácido carboxílico -->
+                <div class="evo-node acido">
+                    <span class="family-name">Ácido carboxílico</span>
+                    <span class="func-group">R–COOH</span>
+                </div>
+
+                <!-- Divisor "Derivados" -->
+                <div class="derivatives-divider">
+                    <hr />
+                    <span>Derivados</span>
+                    <hr />
+                </div>
+
+                <!-- 5. Derivados del ácido -->
+                <div class="derivatives-grid">
+                    <div class="deriv-item">
+                        <span class="deriv-arrow">?</span>
+                        <span class="deriv-reagent">+ Alcohol</span>
+                        <div class="deriv-card ester">
+                            <span class="family-name">Éster</span>
+                            <span class="func-group">R–COO–R'</span>
+                        </div>
+                    </div>
+                    <div class="deriv-item">
+                        <span class="deriv-arrow">?</span>
+                        <span class="deriv-reagent">+ NH3</span>
+                        <div class="deriv-card amida">
+                            <span class="family-name">Amida</span>
+                            <span class="func-group">R–CONH2</span>
+                        </div>
+                    </div>
+                    <div class="deriv-item">
+                        <span class="deriv-arrow">?</span>
+                        <span class="deriv-reagent">+ Cl</span>
+                        <div class="deriv-card halogenuro">
+                            <span class="family-name">Halogenuro de acilo</span>
+                            <span class="func-group">R–COCl</span>
+                        </div>
+                    </div>
+                    <div class="deriv-item">
+                        <span class="deriv-arrow">?</span>
+                        <span class="deriv-reagent">+ Ácido</span>
+                        <div class="deriv-card anhidrido">
+                            <span class="family-name">Anhídrido</span>
+                            <span class="func-group">R–CO–O–CO–R'</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="idea-conclusion">
+                    <strong>? Así solo necesitas recordar un pequeño número de transformaciones lógicas.</strong><br />
+                    El resto de familias se entienden como derivados de las anteriores, y la formulación deja de ser una lista de nombres
+                    para convertirse en un sistema con relaciones claras.
+                </div>
+            </div>
+        </div>
+
+        <!-- ================== 8. RECONOCER GRUPOS FUNCIONALES ================== -->
+        <div class="reconocimiento-module">
+            <h2>8. El truco definitivo: reconocer grupos funcionales de un vistazo</h2>
+            <p class="intro">
+                La clave no es memorizar la fórmula completa, sino identificar <strong>la característica que hace único a cada grupo funcional</strong>.
+                Si aprendes a buscar esa "pista", reconocerás el compuesto casi de un vistazo.
+            </p>
+
+            <table class="recog-table">
+                <thead>
+                    <tr>
+                        <th>Familia</th>
+                        <th>Grupo funcional</th>
+                        <th>Característica clave</th>
+                        <th>Truco para reconocerlo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="family-cell">Alcano</td>
+                        <td class="func-cell">C–C</td>
+                        <td class="key-cell"><strong>Solo enlaces simples</strong> entre carbonos. No hay heteroátomos ni enlaces múltiples.</td>
+                        <td class="trick-cell">El compuesto "más simple". Si no ves nada especial, probablemente sea un alcano.</td>
+                    </tr>
+                    <tr>
+                        <td class="family-cell">Alqueno</td>
+                        <td class="func-cell">C=C</td>
+                        <td class="key-cell"><strong>Tiene un doble enlace</strong> entre dos carbonos.</td>
+                        <td class="trick-cell">Busca el único <strong>"="</strong> entre carbonos.</td>
+                    </tr>
+                    <tr>
+                        <td class="family-cell">Alquino</td>
+                        <td class="func-cell">C=C</td>
+                        <td class="key-cell"><strong>Tiene un triple enlace</strong> entre dos carbonos.</td>
+                        <td class="trick-cell">Busca el <strong>"="</strong>. Solo verlo ya identifica un alquino.</td>
+                    </tr>
+                    <tr>
+                        <td class="family-cell">Alcohol</td>
+                        <td class="func-cell">–OH</td>
+                        <td class="key-cell"><strong>Posee un grupo hidroxilo unido a un carbono</strong>, pero <strong>no forma parte de un COOH</strong>.</td>
+                        <td class="trick-cell">Si ves un <strong>OH aislado</strong>, es un alcohol.</td>
+                    </tr>
+                    <tr>
+                        <td class="family-cell">Aldehído</td>
+                        <td class="func-cell">–CHO</td>
+                        <td class="key-cell"><strong>Tiene un carbonilo (C=O) en un extremo</strong> de la cadena. Ese carbono está unido a un H.</td>
+                        <td class="trick-cell">Carbonilo + <strong>H</strong> = aldehído.</td>
+                    </tr>
+                    <tr>
+                        <td class="family-cell">Cetona</td>
+                        <td class="func-cell">&gt;C=O</td>
+                        <td class="key-cell"><strong>Tiene un carbonilo en el interior</strong> de la cadena. El carbono del carbonilo está unido a dos carbonos.</td>
+                        <td class="trick-cell">Carbonilo "encerrado" entre carbonos. Nunca está en un extremo.</td>
+                    </tr>
+                    <tr>
+                        <td class="family-cell">Ácido carboxílico</td>
+                        <td class="func-cell">–COOH</td>
+                        <td class="key-cell"><strong>Es el único que tiene juntos C=O y OH</strong> sobre el mismo carbono.</td>
+                        <td class="trick-cell">Carbonilo + OH = ácido.</td>
+                    </tr>
+                    <tr>
+                        <td class="family-cell">Éster</td>
+                        <td class="func-cell">–COO–</td>
+                        <td class="key-cell"><strong>Tiene un carbonilo unido a otro oxígeno</strong>, que a su vez está unido a otro carbono.</td>
+                        <td class="trick-cell">Carbonilo + O + carbono = éster.</td>
+                    </tr>
+                    <tr>
+                        <td class="family-cell">Amida</td>
+                        <td class="func-cell">–CONH2</td>
+                        <td class="key-cell"><strong>Tiene un carbonilo unido directamente a un nitrógeno</strong>.</td>
+                        <td class="trick-cell">Carbonilo + NH2 = amida.</td>
+                    </tr>
+                    <tr>
+                        <td class="family-cell">Amina</td>
+                        <td class="func-cell">–NH2</td>
+                        <td class="key-cell"><strong>Tiene nitrógeno, pero no hay carbonilo cerca</strong>.</td>
+                        <td class="trick-cell">Si ves NH2 sin C=O, es una amina.</td>
+                    </tr>
+                    <tr>
+                        <td class="family-cell">Nitrilo</td>
+                        <td class="func-cell">–C=N</td>
+                        <td class="key-cell"><strong>Tiene un triple enlace entre carbono y nitrógeno</strong>.</td>
+                        <td class="trick-cell">El único grupo con <strong>C=N</strong>.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>El truco definitivo: buscar primero el carbonilo (C=O)</h3>
+            <p>La mayoría de las familias importantes contienen un <strong>carbonilo (C=O)</strong>.</p>
+
+            <div class="decision-tree">
+                <div class="tree-row">
+                    <div class="tree-node root">¿Hay C=O?</div>
+                </div>
+
+                <div class="tree-row">
+                    <span class="tree-label">NO</span>
+                    <span class="tree-arrow">?</span>
+                    <span class="tree-label">SÍ</span>
+                </div>
+
+                <div class="tree-row" style="gap: 1rem 3rem;">
+                    <div class="tree-branch-group" style="border-color: #f0d4cc;">
+                        <span style="font-weight:600; color:#7a2a1e; margin-right:0.3rem;">NO</span>
+                        <div style="display:flex; flex-wrap:wrap; gap:0.5rem 1.5rem;">
+                            <div style="display:flex; flex-direction:column; align-items:center;">
+                                <span class="tree-node no child">¿Hay OH?</span>
+                                <span style="font-size:0.8rem; color:#5f7f8f;">?</span>
+                                <span class="tree-node child" style="border-color:#3b8a72; background:#e1f0ea;">Alcohol</span>
+                            </div>
+                            <div style="display:flex; flex-direction:column; align-items:center;">
+                                <span class="tree-node no child">¿Hay NH2?</span>
+                                <span style="font-size:0.8rem; color:#5f7f8f;">?</span>
+                                <span class="tree-node child" style="border-color:#3b8a72; background:#e1f0ea;">Amina</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tree-branch-group" style="border-color: #b8d4e0;">
+                        <span style="font-weight:600; color:#1d7a8c; margin-right:0.3rem;">SÍ</span>
+                        <span style="font-size:0.95rem; font-weight:500; color:#1a5f73;">? mirar qué está unido al carbonilo</span>
+                        <span style="font-size:1.2rem; color:#1d7a8c;">?</span>
+                        <span style="font-weight:700; color:#0f4c5c; background:#eaf3f8; padding:0.05rem 1rem; border-radius:30px;">(ver tabla inferior)</span>
+                    </div>
+                </div>
+            </div>
+
+            <p style="font-weight:600; color:#0f4c5c; margin-top:0.5rem; text-align:center;">Si <strong>sí hay C=O</strong>, entonces solo tienes que mirar qué hay unido a ese carbono:</p>
+
+            <table class="carbonyl-table">
+                <thead>
+                    <tr><th>Unido al carbonilo</th><th>Familia</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td class="attached">H</td><td class="family-out">Aldehído</td></tr>
+                    <tr><td class="attached">Carbono</td><td class="family-out">Cetona</td></tr>
+                    <tr><td class="attached">OH</td><td class="family-out">Ácido carboxílico</td></tr>
+                    <tr><td class="attached">OR</td><td class="family-out">Éster</td></tr>
+                    <tr><td class="attached">NH2</td><td class="family-out">Amida</td></tr>
+                    <tr><td class="attached">Cl</td><td class="family-out">Halogenuro de acilo</td></tr>
+                </tbody>
+            </table>
+
+            <p style="text-align:center; font-size:0.9rem; color:#4d7383; margin-top:0.2rem;">Solo con esta tabla puedes distinguir <strong>6 familias</strong>.</p>
+
+            <h3>Las cuatro preguntas que debes hacerte</h3>
+            <p>Cuando veas una fórmula, pregúntate siempre en este orden:</p>
+
+            <ol class="question-list">
+                <li>
+                    <strong>¿Hay un triple enlace C=N?</strong>
+                    <span class="sub-answer">Sí ? <strong>Nitrilo</strong></span>
+                    <span class="sub-answer">No ?</span>
+                </li>
+                <li>
+                    <strong>¿Hay un carbonilo (C=O)?</strong>
+                    <span class="sub-answer">No ?</span>
+                    <span class="sub-answer" style="background:#f4f1ec;">
+                        • ¿Hay OH? ? <strong>Alcohol</strong><br>
+                        • ¿Hay NH2? ? <strong>Amina</strong><br>
+                        • ¿Hay C=C? ? <strong>Alqueno</strong><br>
+                        • ¿Hay C=C? ? <strong>Alquino</strong><br>
+                        • Si no hay nada de eso ? <strong>Alcano</strong>
+                    </span>
+                    <span class="sub-answer">Sí ?</span>
+                </li>
+                <li>
+                    <strong>¿Qué está unido al carbono del carbonilo?</strong>
+                    <span class="sub-answer" style="font-family: 'JetBrains Mono', monospace; background:#f0f4f8; line-height:1.8;">
+                        C=O-H &nbsp;? <strong>Aldehído</strong><br>
+                        C=O-C &nbsp;? <strong>Cetona</strong><br>
+                        C=O-OH ? <strong>Ácido</strong><br>
+                        C=O-OR ? <strong>Éster</strong><br>
+                        C=O-NH2 ? <strong>Amida</strong><br>
+                        C=O-Cl ? <strong>Halogenuro de acilo</strong>
+                    </span>
+                </li>
+            </ol>
+
+            <h3>La idea que más ayuda a memorizar</h3>
+            <p>En realidad, casi toda la formulación orgánica gira en torno a <strong>tres estructuras fundamentales</strong>:</p>
+
+            <div class="fund-box">
+                <div class="fund-item">
+                    <div class="title">? Hidrocarburos</div>
+                    <div class="content">
+                        Solo C e H<br>
+                        <span class="highlight">C–C</span><br>
+                        <span class="highlight">C=C</span><br>
+                        <span class="highlight">C=C</span>
+                    </div>
+                </div>
+                <div class="fund-item">
+                    <div class="title">? Hidroxilo</div>
+                    <div class="content">
+                        <span class="highlight">OH</span><br>
+                        ?<br>
+                        <strong>Alcohol</strong>
+                    </div>
+                </div>
+                <div class="fund-item">
+                    <div class="title">? Carbonilo</div>
+                    <div class="content">
+                        <span class="highlight">C=O</span><br>
+                        ?<br>
+                        Aldehído · Cetona · Ácido<br>
+                        Éster · Amida · Halogenuro de acilo · Anhídrido
+                    </div>
+                </div>
+            </div>
+
+            <p style="margin-top:0.8rem;">Y, aparte, hay dos grupos muy fáciles de reconocer:</p>
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1.5rem; background:#eef6fa; border-radius:60px; padding:0.4rem 1.5rem; border:1px solid #d0dce4;">
+                <span style="font-family:'JetBrains Mono',monospace; font-weight:700; color:#a13d6b;">NH2</span>
+                <span style="font-weight:300; color:#6f8f9e;">?</span>
+                <span style="font-weight:600; color:#0f4c5c;">Amina</span>
+                <span style="font-weight:300; color:#6f8f9e; margin-left:0.5rem;">|</span>
+                <span style="font-family:'JetBrains Mono',monospace; font-weight:700; color:#a13d6b;">C=N</span>
+                <span style="font-weight:300; color:#6f8f9e;">?</span>
+                <span style="font-weight:600; color:#0f4c5c;">Nitrilo</span>
+            </div>
+
+            <div class="golden-rule">
+                <div class="rule-title">? Regla de oro</div>
+                <div class="rule-text">
+                    Si aprendes a <strong>buscar primero el carbonilo (C=O)</strong> y, después, a identificar
+                    <strong>qué está unido a ese carbono</strong>, podrás reconocer de inmediato la mayoría de los grupos funcionales
+                    que se estudian en Bachillerato sin necesidad de memorizar todas las fórmulas completas.
+                </div>
+            </div>
+        </div>
+
+        <!-- ================== CONCLUSIÓN FINAL ================== -->
+        <div style="background:#f0f8ff; padding:1rem 1.5rem; border-radius:12px; margin-top:1.5rem; border:1px solid #b8d0dd;">
+            <p style="margin:0; font-size:1rem;">
+                <strong>? Conclusión:</strong> Así solo necesitas recordar un pequeño número de transformaciones lógicas.
+                El resto de familias se entienden como derivados de las anteriores, y la formulación deja de ser una lista de nombres
+                para convertirse en un sistema con relaciones claras.
+            </p>
+        </div>
+
+        <hr style="border:0; border-top:2px dashed #c0d6df; margin:2rem 0;" />
+        <p class="small-note" style="text-align:center; color:#4a6a7a;">
+            Contenido estructurado a partir del material original, con los nombres de los radicales de cada grupo funcional.
+        </p>
+
+    </div>
+    <!-- fin .container -->
+</body>
+</html>
